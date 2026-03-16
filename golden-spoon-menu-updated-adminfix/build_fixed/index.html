@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Golden Spoon — Authentic Indian Restaurant</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <div class="nav-brand"><h1>The Golden Spoon</h1></div>
+    <ul class="nav-menu">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="feedback.html">Feedback</a></li>
+      <li><a href="cart.html">Cart <span id="cart-count" class="cart-badge">0</span></a></li>
+    </ul>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html" class="active">Home</a>
+  <a href="menu.html">Menu</a>
+  <a href="feedback.html">Feedback</a>
+  <a href="cart.html">Cart <span class="cart-badge" id="cart-count-mobile">0</span></a>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <h1 class="hero-title"><span>The Golden</span><br>Spoon</h1>
+    <p class="hero-subtitle">Authentic Indian flavours, crafted with passion and served with pride</p>
+    <div class="hero-cta-group">
+      <a href="menu.html" class="btn btn-primary btn-large">🍛 Explore Menu</a>
+      <a href="feedback.html" class="btn btn-secondary btn-large">⭐ Reviews</a>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section class="about-section">
+  <div class="container">
+    <h2 class="section-title">Our Story</h2>
+    <p class="about-text">At The Golden Spoon, we believe great food brings people together. Established with a passion for culinary excellence, we combine traditional Indian recipes with modern presentation to create unforgettable dining experiences.</p>
+    <p class="about-text">Our chefs carefully select the finest spices and freshest ingredients to craft dishes that delight your senses — from aromatic starters to indulgent desserts, everything is prepared with love.</p>
+    <div class="features">
+      <div class="feature-card scroll-reveal">
+        <div class="feature-icon">🌿</div>
+        <h3>Fresh Ingredients</h3>
+        <p>Premium, locally sourced spices and produce in every dish</p>
+      </div>
+      <div class="feature-card scroll-reveal">
+        <div class="feature-icon">👨‍🍳</div>
+        <h3>Expert Chefs</h3>
+        <p>Culinary artists with decades of authentic Indian cooking</p>
+      </div>
+      <div class="feature-card scroll-reveal">
+        <div class="feature-icon">⭐</div>
+        <h3>5-Star Service</h3>
+        <p>Exceptional dining experience with warm hospitality</p>
+      </div>
+      <div class="feature-card scroll-reveal">
+        <div class="feature-icon">🛒</div>
+        <h3>Easy Ordering</h3>
+        <p>Order at your table — quick, simple and cashless</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Hours -->
+<section class="hours-section">
+  <div class="container">
+    <h2 class="section-title">Opening Hours</h2>
+    <div class="hours-grid">
+      <div class="hours-item">
+        <span class="day">Monday – Friday</span>
+        <span class="time">11:00 AM – 10:30 PM</span>
+      </div>
+      <div class="hours-item">
+        <span class="day">Saturday – Sunday</span>
+        <span class="time">10:00 AM – 11:30 PM</span>
+      </div>
+      <div class="hours-item">
+        <span class="day">📞 Reservations</span>
+        <span class="time">+91 98765 43210</span>
+      </div>
+      <div class="hours-item">
+        <span class="day">📍 Location</span>
+        <span class="time">MG Road, Bengaluru</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <p>&copy; 2024 The Golden Spoon. All rights reserved.</p>
+    <p>📞 +91 98765 43210 | 📧 info@goldenspoon.com | 📍 MG Road, Bengaluru</p>
+  </div>
+</footer>
+
+<div id="toast" class="toast"></div>
+
+<script src="js/cart.js"></script>
+<script src="js/animations.js"></script>
+<script>
+  const ham = document.getElementById('nav-hamburger');
+  const mob = document.getElementById('nav-mobile');
+  ham.addEventListener('click', () => {
+    ham.classList.toggle('open');
+    mob.classList.toggle('open');
+  });
+</script>
+</body>
+</html>

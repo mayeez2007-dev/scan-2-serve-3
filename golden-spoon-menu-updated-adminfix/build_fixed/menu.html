@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu — The Golden Spoon</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <div class="nav-brand"><h1>The Golden Spoon</h1></div>
+    <ul class="nav-menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="menu.html" class="active">Menu</a></li>
+      <li><a href="feedback.html">Feedback</a></li>
+      <li><a href="cart.html">Cart <span id="cart-count" class="cart-badge">0</span></a></li>
+    </ul>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Home</a>
+  <a href="menu.html" class="active">Menu</a>
+  <a href="feedback.html">Feedback</a>
+  <a href="cart.html">Cart <span id="cart-count-mobile" class="cart-badge">0</span></a>
+</div>
+
+<section class="page-header">
+  <div class="container">
+    <h1>Our Menu</h1>
+    <p>Authentic Indian cuisine crafted with love &amp; tradition</p>
+  </div>
+</section>
+
+<section class="menu-section">
+  <div class="container">
+    <div class="category-filter">
+      <button class="category-btn active" data-category="all">All Items</button>
+      <button class="category-btn" data-category="starters">🥗 Starters</button>
+      <button class="category-btn" data-category="main-course">🍛 Main Course</button>
+      <button class="category-btn" data-category="breads-rice">🍞 Breads &amp; Rice</button>
+      <button class="category-btn" data-category="desserts">🍮 Desserts</button>
+      <button class="category-btn" data-category="cold-drinks">🥤 Cold Drinks</button>
+    </div>
+    <div id="menu-items"></div>
+  </div>
+</section>
+
+<div id="toast" class="toast"></div>
+
+<footer class="footer">
+  <div class="container">
+    <p>&copy; 2024 The Golden Spoon. All rights reserved.</p>
+    <p>📞 +91 98765 43210 | 📧 info@goldenspoon.com</p>
+  </div>
+</footer>
+
+<script src="js/menuData.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/menu.js"></script>
+<script src="js/animations.js"></script>
+<script>
+  // Mobile nav toggle
+  const ham = document.getElementById('nav-hamburger');
+  const mob = document.getElementById('nav-mobile');
+  ham.addEventListener('click', () => {
+    ham.classList.toggle('open');
+    mob.classList.toggle('open');
+  });
+  // sync mobile cart count
+  document.addEventListener('DOMContentLoaded', () => {
+    const mob = document.getElementById('cart-count-mobile');
+    const main = document.getElementById('cart-count');
+    if (mob && main) mob.textContent = main.textContent;
+  });
+</script>
+</body>
+</html>

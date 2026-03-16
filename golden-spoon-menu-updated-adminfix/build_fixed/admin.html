@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Management Dashboard - The Golden Spoon</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body class="admin-page">
+
+  <!-- ═══ NAVIGATION ═══ -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand"><h1>🥄 The Golden Spoon</h1></div>
+      <div class="admin-nav-right">
+        <span class="admin-nav-badge">⚙️ Management Panel</span>
+        <a href="index.html" class="admin-back-link">← Back to Site</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══ PAGE HEADER ═══ -->
+  <section class="page-header">
+    <div class="container">
+      <h1>Management Dashboard</h1>
+      <p>Orders &bull; Payments &bull; Feedback &bull; Analytics</p>
+    </div>
+  </section>
+
+  <!-- ═══ ADMIN SECTION ═══ -->
+  <section class="admin-section">
+    <div class="container">
+
+      <!-- ══ QUICK STATS ══ -->
+      <div class="admin-stats">
+        <div class="admin-stat-card scroll-reveal">
+          <span class="admin-stat-icon">📋</span>
+          <div class="admin-stat-label">Total Orders</div>
+          <div id="stat-total" class="admin-stat-value">0</div>
+        </div>
+        <div class="admin-stat-card scroll-reveal">
+          <span class="admin-stat-icon">🆕</span>
+          <div class="admin-stat-label">New</div>
+          <div id="stat-new" class="admin-stat-value">0</div>
+        </div>
+        <div class="admin-stat-card scroll-reveal">
+          <span class="admin-stat-icon">👨‍🍳</span>
+          <div class="admin-stat-label">Preparing</div>
+          <div id="stat-preparing" class="admin-stat-value">0</div>
+        </div>
+        <div class="admin-stat-card scroll-reveal">
+          <span class="admin-stat-icon">🍽️</span>
+          <div class="admin-stat-label">Ready to Serve</div>
+          <div id="stat-out" class="admin-stat-value">0</div>
+        </div>
+        <div class="admin-stat-card scroll-reveal">
+          <span class="admin-stat-icon">✅</span>
+          <div class="admin-stat-label">Served</div>
+          <div id="stat-delivered" class="admin-stat-value">0</div>
+        </div>
+        <div class="admin-stat-card scroll-reveal admin-stat-card-green">
+          <span class="admin-stat-icon">💰</span>
+          <div class="admin-stat-label">Payments Verified</div>
+          <div id="stat-pay-verified" class="admin-stat-value">0</div>
+        </div>
+        <div class="admin-stat-card scroll-reveal admin-stat-card-amber">
+          <span class="admin-stat-icon">⏳</span>
+          <div class="admin-stat-label">Pending Payment</div>
+          <div id="stat-pay-pending" class="admin-stat-value">0</div>
+        </div>
+      </div>
+
+      <!-- ══ ORDER WORKFLOW BANNER ══ -->
+      <div class="admin-workflow-banner scroll-reveal" aria-label="Order workflow stages">
+        <div class="admin-workflow-step" data-wstep="new"><div class="admin-workflow-step-icon">🆕</div><div class="admin-workflow-step-label">New Order</div></div>
+        <div class="admin-workflow-arrow">›</div>
+        <div class="admin-workflow-step" data-wstep="preparing"><div class="admin-workflow-step-icon">👨‍🍳</div><div class="admin-workflow-step-label">Preparing</div></div>
+        <div class="admin-workflow-arrow">›</div>
+        <div class="admin-workflow-step" data-wstep="out_for_delivery"><div class="admin-workflow-step-icon">🍽️</div><div class="admin-workflow-step-label">Ready to Serve</div></div>
+        <div class="admin-workflow-arrow">›</div>
+        <div class="admin-workflow-step" data-wstep="delivered"><div class="admin-workflow-step-icon">✅</div><div class="admin-workflow-step-label">Served</div></div>
+        <div class="admin-workflow-arrow">›</div>
+        <div class="admin-workflow-step" data-wstep="payment"><div class="admin-workflow-step-icon">💳</div><div class="admin-workflow-step-label">Payment</div></div>
+      </div>
+
+      <!-- ══ TABS ══ -->
+      <div class="admin-tabs scroll-reveal" role="tablist" aria-label="Admin sections">
+        <button class="admin-tab active" type="button" data-tab="orders"   role="tab" aria-selected="true">📋 Orders</button>
+        <button class="admin-tab"        type="button" data-tab="payments" role="tab" aria-selected="false">💳 Payments</button>
+        <button class="admin-tab"        type="button" data-tab="feedback" role="tab" aria-selected="false">💬 Feedback</button>
+        <button class="admin-tab"        type="button" data-tab="overview" role="tab" aria-selected="false">📊 Overview</button>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           TAB 1 — ORDERS
+      ══════════════════════════════════════════ -->
+      <div id="tab-orders" class="admin-tab-panel" role="tabpanel">
+
+        <!-- Toolbar -->
+        <div class="admin-toolbar scroll-reveal">
+          <div class="admin-search-wrap">
+            <span class="admin-search-icon" aria-hidden="true">🔎</span>
+            <input id="admin-search" type="search" placeholder="Search order #, name, phone, table…" />
+          </div>
+          <div class="admin-toolbar-right">
+            <button id="btn-seed"  class="btn btn-secondary" type="button" title="Creates a sample order for demo/testing">➕ Demo Order</button>
+            <button id="btn-clear" class="btn btn-secondary" type="button" title="Clears admin view metadata only">🗑 Clear View</button>
+          </div>
+        </div>
+
+        <!-- Delivery Staff -->
+        <div class="admin-delivery-staff scroll-reveal">
+          <div class="admin-delivery-staff-header">
+            <h2 class="admin-block-title">🍽️ Serving Team</h2>
+            <p class="admin-block-subtitle">Add serving staff names for quick assignment to orders.</p>
+          </div>
+          <div class="admin-delivery-staff-controls">
+            <input id="delivery-name" type="text" placeholder="e.g., Rahul (Server)" />
+            <button id="add-delivery" class="btn btn-primary" type="button">Add Server</button>
+            <div id="delivery-list" class="admin-chip-row" aria-label="Serving staff list"></div>
+          </div>
+        </div>
+
+        <!-- Kanban Board -->
+        <div class="admin-board scroll-reveal">
+          <div class="admin-col" data-status="new">
+            <div class="admin-col-header">
+              <div class="admin-col-header-left"><span class="admin-col-icon">🆕</span><h3>New Orders</h3></div>
+              <span id="count-new" class="admin-col-count">0</span>
+            </div>
+            <div id="orders-new" class="admin-col-body"></div>
+          </div>
+          <div class="admin-col" data-status="preparing">
+            <div class="admin-col-header">
+              <div class="admin-col-header-left"><span class="admin-col-icon">👨‍🍳</span><h3>Preparing</h3></div>
+              <span id="count-preparing" class="admin-col-count">0</span>
+            </div>
+            <div id="orders-preparing" class="admin-col-body"></div>
+          </div>
+          <div class="admin-col" data-status="out_for_delivery">
+            <div class="admin-col-header">
+              <div class="admin-col-header-left"><span class="admin-col-icon">🍽️</span><h3>Ready to Serve</h3></div>
+              <span id="count-out" class="admin-col-count">0</span>
+            </div>
+            <div id="orders-out" class="admin-col-body"></div>
+          </div>
+          <div class="admin-col" data-status="delivered">
+            <div class="admin-col-header">
+              <div class="admin-col-header-left"><span class="admin-col-icon">✅</span><h3>Served</h3></div>
+              <span id="count-delivered" class="admin-col-count">0</span>
+            </div>
+            <div id="orders-delivered" class="admin-col-body"></div>
+          </div>
+        </div>
+
+        <div id="admin-empty" class="admin-empty" style="display:none;">
+          <div class="admin-empty-icon">🧾</div>
+          <h2>No orders yet</h2>
+          <p>When a customer places an order, it will appear here automatically.</p>
+          <a href="payment.html" class="btn btn-primary" style="margin-top:1rem;">Go to Checkout (Test)</a>
+        </div>
+      </div><!-- /tab-orders -->
+
+
+      <!-- ══════════════════════════════════════════
+           TAB 2 — PAYMENTS
+      ══════════════════════════════════════════ -->
+      <div id="tab-payments" class="admin-tab-panel" role="tabpanel" style="display:none;">
+
+        <!-- Payment Stats -->
+        <div class="pay-stats-row scroll-reveal">
+          <div class="pay-stat-card pay-stat-green">
+            <div class="pay-stat-icon">✅</div>
+            <div class="pay-stat-label">Verified</div>
+            <div id="pstat-verified" class="pay-stat-val">0</div>
+          </div>
+          <div class="pay-stat-card pay-stat-amber">
+            <div class="pay-stat-icon">⏳</div>
+            <div class="pay-stat-label">Pending Verify</div>
+            <div id="pstat-pending" class="pay-stat-val">0</div>
+          </div>
+          <div class="pay-stat-card pay-stat-blue">
+            <div class="pay-stat-icon">💵</div>
+            <div class="pay-stat-label">COD</div>
+            <div id="pstat-cod" class="pay-stat-val">0</div>
+          </div>
+          <div class="pay-stat-card pay-stat-purple">
+            <div class="pay-stat-icon">📱</div>
+            <div class="pay-stat-label">Online / UPI</div>
+            <div id="pstat-online" class="pay-stat-val">0</div>
+          </div>
+          <div class="pay-stat-card pay-stat-green" style="grid-column:span 2;">
+            <div class="pay-stat-icon">💰</div>
+            <div class="pay-stat-label">Total Revenue (Verified)</div>
+            <div id="pstat-revenue" class="pay-stat-val">₹0.00</div>
+          </div>
+        </div>
+
+        <!-- Payment Filter Toolbar -->
+        <div class="admin-toolbar scroll-reveal" style="margin-top:1.5rem;">
+          <div class="admin-search-wrap">
+            <span class="admin-search-icon" aria-hidden="true">🔎</span>
+            <input id="pay-search" type="search" placeholder="Search order #, customer, transaction ID…" />
+          </div>
+          <div class="admin-toolbar-right">
+            <select id="pay-filter-status" class="admin-filter-select">
+              <option value="all">All Payments</option>
+              <option value="pending_payment">Awaiting Payment</option>
+              <option value="pay_submitted">Payment Submitted</option>
+              <option value="pay_verified">Verified ✅</option>
+              <option value="pay_rejected">Rejected ❌</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Payment Cards List -->
+        <div id="pay-list" class="pay-list scroll-reveal"></div>
+
+        <div id="pay-empty" class="admin-empty" style="display:none;">
+          <div class="admin-empty-icon">💳</div>
+          <h2>No payments yet</h2>
+          <p>Payments will appear here once customers place orders and initiate payment after their order is served.</p>
+        </div>
+
+      </div><!-- /tab-payments -->
+
+
+      <!-- ══════════════════════════════════════════
+           TAB 3 — FEEDBACK
+      ══════════════════════════════════════════ -->
+      <div id="tab-feedback" class="admin-tab-panel" role="tabpanel" style="display:none;">
+        <div class="admin-feedback-head scroll-reveal">
+          <h2 class="admin-block-title">💬 Customer Feedback</h2>
+          <p class="admin-block-subtitle">See all customer reviews and ratings exactly as submitted.</p>
+        </div>
+
+        <!-- Feedback Summary -->
+        <div class="feedback-summary-row scroll-reveal">
+          <div class="feedback-summary-card">
+            <div class="feedback-summary-icon">⭐</div>
+            <div class="feedback-summary-label">Average Rating</div>
+            <div id="reviews-avg" class="feedback-summary-val">0.0</div>
+          </div>
+          <div class="feedback-summary-card">
+            <div class="feedback-summary-icon">💬</div>
+            <div class="feedback-summary-label">Total Reviews</div>
+            <div id="reviews-total" class="feedback-summary-val">0</div>
+          </div>
+          <div class="feedback-summary-card">
+            <div class="feedback-summary-icon">🌟</div>
+            <div class="feedback-summary-label">5-Star Reviews</div>
+            <div id="reviews-5star" class="feedback-summary-val">0</div>
+          </div>
+          <div class="feedback-summary-card">
+            <div class="feedback-summary-icon">📉</div>
+            <div class="feedback-summary-label">Below 3 Stars</div>
+            <div id="reviews-low" class="feedback-summary-val">0</div>
+          </div>
+        </div>
+
+        <!-- Rating Distribution -->
+        <div class="rating-distribution scroll-reveal" id="rating-distribution"></div>
+
+        <!-- Reviews Filter -->
+        <div class="admin-toolbar scroll-reveal" style="margin-top:1rem;">
+          <div class="admin-search-wrap">
+            <span class="admin-search-icon" aria-hidden="true">🔎</span>
+            <input id="feedback-search" type="search" placeholder="Search by name or review content…" />
+          </div>
+          <div class="admin-toolbar-right">
+            <select id="feedback-filter-stars" class="admin-filter-select">
+              <option value="all">All Ratings</option>
+              <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
+              <option value="4">⭐⭐⭐⭐ 4 Stars</option>
+              <option value="3">⭐⭐⭐ 3 Stars</option>
+              <option value="2">⭐⭐ 2 Stars</option>
+              <option value="1">⭐ 1 Star</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Reviews List -->
+        <div class="admin-feedback-grid scroll-reveal">
+          <div class="admin-feedback-list">
+            <div id="admin-reviews" class="reviews-list"></div>
+          </div>
+        </div>
+      </div><!-- /tab-feedback -->
+
+
+      <!-- ══════════════════════════════════════════
+           TAB 4 — OVERVIEW / ANALYTICS
+      ══════════════════════════════════════════ -->
+      <div id="tab-overview" class="admin-tab-panel" role="tabpanel" style="display:none;">
+        <div class="scroll-reveal">
+          <h2 class="admin-block-title" style="margin-bottom:0.4rem;">📊 Business Overview</h2>
+          <p class="admin-block-subtitle" style="margin-bottom:1.5rem;">Summary of orders, revenue, and customer activity.</p>
+        </div>
+
+        <!-- Overview Grid -->
+        <div class="overview-grid scroll-reveal">
+
+          <!-- Revenue Card -->
+          <div class="overview-card overview-card-wide">
+            <div class="overview-card-header">
+              <span class="overview-card-icon">💰</span>
+              <h3>Revenue Summary</h3>
+            </div>
+            <div class="overview-revenue-row">
+              <div class="overview-rev-item">
+                <div class="overview-rev-label">Total Revenue</div>
+                <div id="ov-total-rev" class="overview-rev-val">₹0.00</div>
+              </div>
+              <div class="overview-rev-item">
+                <div class="overview-rev-label">Verified Revenue</div>
+                <div id="ov-verified-rev" class="overview-rev-val overview-rev-green">₹0.00</div>
+              </div>
+              <div class="overview-rev-item">
+                <div class="overview-rev-label">Pending Revenue</div>
+                <div id="ov-pending-rev" class="overview-rev-val overview-rev-amber">₹0.00</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Orders Summary -->
+          <div class="overview-card">
+            <div class="overview-card-header">
+              <span class="overview-card-icon">📋</span>
+              <h3>Orders</h3>
+            </div>
+            <div id="ov-orders-breakdown" class="overview-breakdown"></div>
+          </div>
+
+          <!-- Payment Summary -->
+          <div class="overview-card">
+            <div class="overview-card-header">
+              <span class="overview-card-icon">💳</span>
+              <h3>Payment Methods</h3>
+            </div>
+            <div id="ov-payment-breakdown" class="overview-breakdown"></div>
+          </div>
+
+          <!-- Top Items -->
+          <div class="overview-card overview-card-wide">
+            <div class="overview-card-header">
+              <span class="overview-card-icon">🍽️</span>
+              <h3>Most Ordered Items</h3>
+            </div>
+            <div id="ov-top-items" class="overview-top-items"></div>
+          </div>
+
+          <!-- Recent Activity -->
+          <div class="overview-card overview-card-wide">
+            <div class="overview-card-header">
+              <span class="overview-card-icon">🕐</span>
+              <h3>Recent Activity</h3>
+            </div>
+            <div id="ov-activity" class="overview-activity"></div>
+          </div>
+
+        </div>
+      </div><!-- /tab-overview -->
+
+    </div>
+  </section>
+
+  <!-- ═══ ORDER DETAILS MODAL ═══ -->
+  <div id="admin-modal" class="modal" aria-hidden="true">
+    <div class="modal-content admin-modal-content">
+      <button id="admin-modal-close" class="admin-modal-close" type="button" aria-label="Close">×</button>
+      <div class="admin-modal-header">
+        <div>
+          <h2 id="modal-title">Order Details</h2>
+          <p id="modal-subtitle" class="admin-modal-subtitle">—</p>
+        </div>
+        <div class="admin-modal-badges">
+          <span id="modal-status" class="admin-pill">New</span>
+          <span id="modal-timer"  class="admin-pill admin-pill-outline">00:00</span>
+        </div>
+      </div>
+      <div id="modal-body" class="admin-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- ═══ PAYMENT VERIFICATION MODAL ═══ -->
+  <div id="pay-verify-modal" class="modal" aria-hidden="true">
+    <div class="modal-content admin-modal-content pay-verify-modal-content">
+      <button id="pay-verify-modal-close" class="admin-modal-close" type="button" aria-label="Close">×</button>
+      <div class="pay-verify-header">
+        <div class="pay-verify-icon-wrap" id="pvm-icon">💳</div>
+        <div>
+          <h2 id="pvm-title">Verify Payment</h2>
+          <p id="pvm-subtitle" class="admin-modal-subtitle">—</p>
+        </div>
+      </div>
+      <div id="pvm-body" class="pvm-body"></div>
+    </div>
+  </div>
+
+  <!-- ═══ DELIVERY SUCCESS POPUP ═══ -->
+  <div id="delivery-success-overlay" class="delivery-success-overlay" role="dialog" aria-modal="true" aria-label="Order Served Successfully">
+    <div id="delivery-success-box" class="delivery-success-card">
+      <div class="delivery-success-check">✓</div>
+      <div class="delivery-success-title">Order Served Successfully! 🍽️</div>
+      <div class="delivery-success-subtitle" id="ds-subtitle">The order has been served to the table.</div>
+      <div class="delivery-success-details" id="ds-details"></div>
+      <div class="delivery-success-progress">
+        <div class="delivery-success-progress-bar" id="ds-progress-bar"></div>
+      </div>
+      <div class="delivery-success-close-hint">✨ Closes automatically in a few seconds…</div>
+    </div>
+  </div>
+
+  <!-- ═══ NOTIFICATIONS ═══ -->
+  <div id="admin-notifications" class="admin-notifications" aria-live="polite" aria-atomic="true"></div>
+  <div id="toast" class="toast">Message</div>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2024 The Golden Spoon. All rights reserved.</p>
+      <p>📞 +1 (555) 123-4567 | 📧 info@goldenspoon.com</p>
+    </div>
+  </footer>
+
+  <script src="js/cart.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

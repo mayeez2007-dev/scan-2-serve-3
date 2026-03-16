@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart — The Golden Spoon</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <div class="nav-brand"><h1>The Golden Spoon</h1></div>
+    <ul class="nav-menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="feedback.html">Feedback</a></li>
+      <li><a href="cart.html" class="active">Cart <span id="cart-count" class="cart-badge">0</span></a></li>
+    </ul>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Home</a>
+  <a href="menu.html">Menu</a>
+  <a href="feedback.html">Feedback</a>
+  <a href="cart.html" class="active">Cart <span id="cart-count-mobile" class="cart-badge">0</span></a>
+</div>
+
+<section class="page-header">
+  <div class="container">
+    <h1>Your Cart</h1>
+    <p>Review and customize your order</p>
+  </div>
+</section>
+
+<section class="cart-section">
+  <div class="container">
+    <div id="cart-empty" class="empty-cart" style="display:none;">
+      <div class="empty-cart-icon">🛒</div>
+      <h2>Your cart is empty</h2>
+      <p>Add some delicious items from our menu!</p>
+      <a href="menu.html" class="btn btn-primary">Browse Menu</a>
+    </div>
+
+    <div id="cart-content" class="cart-content" style="display:none;">
+      <div class="cart-items" id="cart-items"></div>
+
+      <div class="cart-summary">
+        <h2>Order Summary</h2>
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span id="subtotal">₹0.00</span>
+        </div>
+        <div class="summary-row">
+          <span>GST (5%)</span>
+          <span id="tax">₹0.00</span>
+        </div>
+        <div class="summary-row summary-total">
+          <span>Total</span>
+          <span id="total">₹0.00</span>
+        </div>
+        <button class="btn btn-primary btn-full btn-large" onclick="proceedToPayment()" style="margin-top:1.2rem;">
+          🍽️ Place Order
+        </button>
+        <a href="menu.html" class="btn btn-secondary btn-full" style="margin-top:.7rem;">
+          ← Continue Shopping
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="toast" class="toast"></div>
+
+<footer class="footer">
+  <div class="container">
+    <p>&copy; 2024 The Golden Spoon. All rights reserved.</p>
+    <p>📞 +91 98765 43210 | 📧 info@goldenspoon.com</p>
+  </div>
+</footer>
+
+<script src="js/cart.js"></script>
+<script src="js/cart-page.js"></script>
+<script src="js/animations.js"></script>
+<script>
+  const ham = document.getElementById('nav-hamburger');
+  const mob = document.getElementById('nav-mobile');
+  ham.addEventListener('click', () => {
+    ham.classList.toggle('open');
+    mob.classList.toggle('open');
+  });
+</script>
+</body>
+</html>

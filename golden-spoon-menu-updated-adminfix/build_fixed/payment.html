@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - The Golden Spoon</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>The Golden Spoon</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="feedback.html">Feedback</a></li>
+                <li><a href="cart.html">Cart <span id="cart-count" class="cart-badge">0</span></a></li>
+            </ul>
+            <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu">
+              <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+    <div class="nav-mobile" id="nav-mobile">
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="feedback.html">Feedback</a>
+      <a href="cart.html">Cart</a>
+    </div>
+
+    <!-- Payment Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Checkout</h1>
+            <p>Complete your order</p>
+        </div>
+    </section>
+
+    <!-- Payment Content -->
+    <section class="payment-section">
+        <div class="container">
+            <div class="payment-grid">
+                <!-- Order Summary -->
+                <div class="order-summary-box">
+                    <h2>Order Summary</h2>
+                    <div id="order-items" class="order-items"></div>
+                    <div class="summary-totals">
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span id="summary-subtotal">₹0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Tax (5%)</span>
+                            <span id="summary-tax">₹0.00</span>
+                        </div>
+                        <div class="summary-row summary-total">
+                            <span>Total</span>
+                            <span id="summary-total">₹0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Form -->
+                <div class="payment-form-box">
+                    <h2>Order Details</h2>
+                    <form id="payment-form">
+                        <div class="form-section">
+                            <h3>Contact Information</h3>
+                            <div class="form-group">
+                                <label for="customer-name">Full Name *</label>
+                                <input type="text" id="customer-name" name="name" required placeholder="John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label for="customer-phone">Phone Number *</label>
+                                <input type="tel" id="customer-phone" name="phone" required placeholder="+91 98765 43210">
+                            </div>
+                            <div class="form-group">
+                                <label for="customer-email">Email Address</label>
+                                <input type="email" id="customer-email" name="email" placeholder="john@example.com">
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3>Table Information</h3>
+                            <div class="form-group">
+                                <label for="table-number">Table Number *</label>
+                                <input type="text" id="table-number" name="tableNumber" required placeholder="e.g., 12">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="order-notes">Special Instructions (Optional)</label>
+                            <textarea id="order-notes" name="notes" rows="3" placeholder="Any special requests or dietary requirements..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-full btn-large">🍽️ Place Order</button>
+                        <a href="cart.html" class="btn btn-secondary btn-full" style="margin-top:0.75rem;">Back to Cart</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Confirmation Modal -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content" style="max-height:90vh;overflow-y:auto;">
+            <div class="confirmation-icon">✅</div>
+            <h2>Order Placed Successfully!</h2>
+            <p style="color:var(--text-light);font-weight:600;">Thank you! We'll serve your food soon.</p>
+            <div id="order-number" class="order-number"></div>
+
+            <!-- Delivery Timer -->
+            <div id="delivery-tracker" class="delivery-tracker" style="display:none;">
+                <h3 class="delivery-title">🕐 Service Timer</h3>
+                <div class="delivery-timer-grid">
+                    <div id="delivery-progress" class="delivery-progress" aria-label="Service countdown">
+                        <div class="delivery-progress-inner">
+                            <div id="delivery-time" class="delivery-time">--:--</div>
+                            <div id="delivery-label" class="delivery-label">Estimated arrival</div>
+                        </div>
+                    </div>
+                    <div class="delivery-meta">
+                        <div class="delivery-meta-row">
+                            <span>Estimated</span>
+                            <strong id="delivery-estimate">-- min</strong>
+                        </div>
+                        <div class="delivery-meta-row">
+                            <span>Status</span>
+                            <strong id="delivery-status">Preparing</strong>
+                        </div>
+                        <div class="delivery-meta-hint">Keep this page open to track your order.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════════════════════════════
+                 POST-DELIVERY PAYMENT SECTION
+                 Shown ONLY when admin marks order as Delivered
+            ════════════════════════════════════════ -->
+            <div id="post-delivery-payment" class="post-delivery-payment" style="display:none;">
+                <div class="pdp-header">
+                    <div class="pdp-header-icon">💳</div>
+                    <div>
+                        <h3 class="pdp-title">Complete Your Payment</h3>
+                        <p class="pdp-subtitle">Your food has been served! Please pay now.</p>
+                    </div>
+                </div>
+
+                <!-- Amount Due -->
+                <div class="pdp-amount-box">
+                    <span class="pdp-amount-label">Amount Due</span>
+                    <span class="pdp-amount-value" id="pdp-amount">₹0.00</span>
+                </div>
+
+                <!-- Payment Method Selector -->
+                <div class="pdp-method-grid">
+                    <button class="pdp-method-btn active" id="btn-cod" onclick="selectPaymentMethod('cod')">
+                        <span class="pdp-method-icon">💵</span>
+                        <span class="pdp-method-label">Cash on Delivery</span>
+                        <span class="pdp-method-sub">Pay at the counter</span>
+                    </button>
+                    <button class="pdp-method-btn" id="btn-online" onclick="selectPaymentMethod('online')">
+                        <span class="pdp-method-icon">📱</span>
+                        <span class="pdp-method-label">Online Payment</span>
+                        <span class="pdp-method-sub">UPI / QR Code</span>
+                    </button>
+                </div>
+
+                <!-- COD Panel -->
+                <div id="cod-panel" class="pdp-panel">
+                    <div class="cod-info-box">
+                        <div class="cod-icon">💰</div>
+                        <div>
+                            <div class="cod-title">Pay at the Counter</div>
+                            <div class="cod-desc">Please proceed to the billing counter to complete your cash payment. Show your order number to the staff.</div>
+                        </div>
+                    </div>
+                    <div class="cod-order-ref" id="cod-order-ref"></div>
+                    <button class="btn btn-primary btn-full" onclick="confirmCODPayment()">✅ Confirm Cash Payment</button>
+                </div>
+
+                <!-- Online Payment Panel -->
+                <div id="online-panel" class="pdp-panel" style="display:none;">
+                    <div class="upi-steps">
+                        <!-- Step 1: Scan QR -->
+                        <div class="upi-step active" id="upi-step-1">
+                            <div class="upi-step-header">
+                                <div class="upi-step-num">1</div>
+                                <div class="upi-step-text">Scan QR Code to Pay</div>
+                            </div>
+                            <div class="upi-qr-container">
+                                <!-- UPI ID display -->
+                                <div class="upi-id-bar">
+                                    <span class="upi-id-label">UPI ID</span>
+                                    <span class="upi-id-value" id="upi-id-display">7899944252@fam</span>
+                                    <button class="upi-copy-btn" onclick="copyUpiId()" title="Copy UPI ID">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                    </button>
+                                    <span class="upi-copy-toast" id="upi-copy-toast">Copied!</span>
+                                </div>
+                                <!-- QR Code Scanner Card (styled like the original) -->
+                                <div class="upi-scanner-scene">
+                                    <!-- Dark outer card -->
+                                    <div class="upi-scanner-outer">
+                                        <!-- Floating coin decorations -->
+                                        <div class="scanner-coin scanner-coin-1">₹</div>
+                                        <div class="scanner-coin scanner-coin-2">₹</div>
+                                        <div class="scanner-coin scanner-coin-3">₹</div>
+                                        <!-- Golden inner card -->
+                                        <div class="upi-scanner-card">
+                                            <img
+                                                src="images/upi-qr.png"
+                                                alt="UPI QR Code – Scan to Pay"
+                                                class="upi-qr-img"
+                                                id="upi-qr-img"
+                                            />
+                                            <!-- Brand row: trio + UPI -->
+                                            <div class="upi-scanner-brand-row">
+                                                <span class="scanner-brand-trio">tri<span class="trio-dots">ö</span></span>
+                                                <span class="scanner-brand-divider"></span>
+                                                <span class="scanner-brand-upi">
+                                                    <svg width="38" height="16" viewBox="0 0 90 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <text x="0" y="22" font-family="Arial Black,Arial" font-weight="900" font-size="22" fill="#1a1a1a">UPI</text>
+                                                        <polygon points="72,4 84,14 72,24" fill="#10B981"/>
+                                                        <polygon points="80,4 90,14 80,24" fill="#F59E0B" opacity="0.85"/>
+                                                    </svg>
+                                                    <span class="upi-full-label">UNIFIED PAYMENTS INTERFACE</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Scan line animation overlay -->
+                                    <div class="scanner-scan-line" id="scanner-scan-line"></div>
+                                </div>
+                                <div class="upi-qr-hint">📱 Open any UPI app → Scan QR → Enter amount → Pay</div>
+                                <!-- Amount reminder -->
+                                <div class="upi-amount-reminder">
+                                    Pay exactly: <strong id="upi-pay-amount">₹0.00</strong>
+                                </div>
+                                <!-- Proceed button -->
+                                <button class="btn btn-primary btn-full" style="margin-top:1rem;" onclick="showTransactionStep()">
+                                    ✅ I've Completed the Payment
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Divider -->
+                        <div class="upi-step-divider" id="upi-divider" style="display:none;"></div>
+
+                        <!-- Step 2: Enter Transaction ID -->
+                        <div class="upi-step" id="upi-step-2" style="display:none;">
+                            <div class="upi-step-header">
+                                <div class="upi-step-num">2</div>
+                                <div class="upi-step-text">Enter Transaction ID</div>
+                            </div>
+                            <div class="txn-form">
+                                <div class="txn-hint">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                    Find the 12-digit transaction ID in your UPI app under payment history.
+                                </div>
+                                <div class="form-group" style="margin-bottom:0.75rem;">
+                                    <label for="txn-id-input" style="font-weight:700;margin-bottom:0.4rem;display:block;">Transaction / UTR ID *</label>
+                                    <input
+                                        type="text"
+                                        id="txn-id-input"
+                                        placeholder="e.g. 423198765432"
+                                        maxlength="24"
+                                        autocomplete="off"
+                                        style="letter-spacing:1.5px;font-weight:700;"
+                                        oninput="validateTxnId(this)"
+                                    />
+                                    <div class="txn-error" id="txn-error" style="display:none;">
+                                        ⚠️ Please enter a valid transaction ID (min. 8 characters)
+                                    </div>
+                                </div>
+                                <div class="txn-actions">
+                                    <button class="btn btn-secondary" type="button" onclick="backToQR()" style="flex:1;">← Back</button>
+                                    <button class="btn btn-primary" type="button" id="txn-confirm-btn" onclick="confirmOnlinePayment()" style="flex:2;">Confirm Payment ✅</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ════ END POST-DELIVERY PAYMENT ════ -->
+
+            <button class="btn btn-secondary btn-full" id="back-home-btn" onclick="window.location.href='index.html'" style="margin-top:1.2rem;">Back to Home</button>
+        </div>
+    </div>
+
+    <!-- Payment Success Modal -->
+    <div id="payment-success-modal" class="modal">
+        <div class="modal-content">
+            <div class="pay-success-anim">
+                <div class="pay-success-ring"></div>
+                <div class="pay-success-icon">✓</div>
+            </div>
+            <h2 style="margin-top:1rem;">Payment Confirmed!</h2>
+            <p style="color:var(--text-light);font-weight:600;margin-bottom:1.2rem;">Thank you for dining with us 🙏</p>
+            <div class="pay-success-details" id="pay-success-details"></div>
+            <p style="color:var(--text-light);font-size:.9rem;margin-bottom:.5rem;">You will be redirected to the feedback page in a moment…</p>
+            <button class="btn btn-primary btn-full" id="btn-goto-feedback" onclick="goToFeedback()" style="margin-top:.8rem;">⭐ Give Your Feedback</button>
+            <button class="btn btn-secondary btn-full" onclick="window.location.href='index.html'" style="margin-top:.6rem;">🏠 Back to Home</button>
+        </div>
+    </div>
+
+    <!-- Delay Benefit Notification -->
+    <div id="delay-notification" class="delay-notification" aria-live="polite" aria-atomic="true">
+        <div class="delay-notification-card">
+            <div class="delay-notification-icon">⏱️</div>
+            <div class="delay-notification-text">
+                <div class="delay-notification-title">Service delay detected</div>
+                <div class="delay-notification-msg">Your order is delayed. You get <strong>5% OFF</strong> on this order.</div>
+            </div>
+            <button id="delay-notification-close" class="delay-notification-close" type="button" aria-label="Close">×</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 The Golden Spoon. All rights reserved.</p>
+            <p>📞 +91 98765 43210 | 📧 info@goldenspoon.com</p>
+        </div>
+    </footer>
+
+    <script src="js/cart.js"></script>
+    <script src="js/payment.js"></script>
+    <script>
+      const ham = document.getElementById('nav-hamburger');
+      const mob = document.getElementById('nav-mobile');
+      if(ham && mob) ham.addEventListener('click', () => { ham.classList.toggle('open'); mob.classList.toggle('open'); });
+    </script>
+</body>
+</html>
